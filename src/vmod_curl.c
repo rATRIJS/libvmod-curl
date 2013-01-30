@@ -198,8 +198,15 @@ void vmod_fetch(struct sess *sp, const char *url)
 	curl_easy_setopt(curl_handle, CURLOPT_HEADERDATA, c);
 
 	/* CUSTOM */
-	struct curl_slist *req_headers = NULL;
-	req_headers = curl_slist_append(req_headers, "X-C-Testing: It Works");
+	struct curl_slist *req_headers;
+	char *user_agent;
+
+	req_headers = NULL;
+	user_agent = VRT_GetHdr(sp, HDR_REQ, "\012User-Agent:");
+	user_agent = sprintf("X-User-Agent: %s", user_agent);
+
+	req_headers = curl_slist_append(req_headers, user_agent);
+	
 	curl_easy_setopt(curl_handle, CURLOPT_HTTPHEADER, req_headers);
 	/* /CUSTOM */
 
