@@ -197,6 +197,12 @@ void vmod_fetch(struct sess *sp, const char *url)
 	curl_easy_setopt(curl_handle, CURLOPT_HEADERFUNCTION, recv_hdrs);
 	curl_easy_setopt(curl_handle, CURLOPT_HEADERDATA, c);
 
+	/* CUSTOM */
+	curl_slist *req_headers = NULL;
+	req_headers = curl_slist_append(req_headers, "X-C-Testing: It Works");
+	curl_easy_setopt(curl_handle, CURLOPT_HTTPHEADER, req_headers);
+	/* /CUSTOM */
+
 	if (c->timeout_ms > 0)
 	  curl_easy_setopt(curl_handle, CURLOPT_TIMEOUT_MS, c->timeout_ms);
 
@@ -224,6 +230,10 @@ void vmod_fetch(struct sess *sp, const char *url)
 	}
 
 	cr = curl_easy_perform(curl_handle);
+
+	/* CUSTOM */
+	curl_slist_free_all(req_headers);
+	/* /CUSTOM */
 
 	if (cr != 0) {
 		c->error = curl_easy_strerror(cr);
