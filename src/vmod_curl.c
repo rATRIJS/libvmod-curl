@@ -198,7 +198,7 @@ void vmod_fetch(struct sess *sp, const char *url)
 	curl_easy_setopt(curl_handle, CURLOPT_HEADERDATA, c);
 
 	/* CUSTOM */
-	curl_slist *req_headers = NULL;
+	struct curl_slist *req_headers = NULL;
 	req_headers = curl_slist_append(req_headers, "X-C-Testing: It Works");
 	curl_easy_setopt(curl_handle, CURLOPT_HTTPHEADER, req_headers);
 	/* /CUSTOM */
